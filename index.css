@@ -1,0 +1,124 @@
+﻿html, body {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    font-family: 'Berkshire Swash', cursive;
+    color: #ffffff;
+    overflow:hidden;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+#left {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 275px;
+    bottom: 0px;
+    background-color: #ff6a00;
+    -webkit-box-shadow: 3px 0px 5px 0px rgba(50, 50, 50, 0.3);
+    -moz-box-shadow:    3px 0px 5px 0px rgba(50, 50, 50, 0.3);
+    box-shadow:         3px 0px 5px 0px rgba(50, 50, 50, 0.3);
+}
+
+#left-scroll {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    right: 0px;
+    bottom: 140px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#left-margins {
+    position: absolute;
+    left: 20px;
+    top: 10px;
+    right: 5px;
+    bottom: 10px;
+    display: inline-block;
+}
+
+#left-disclaimer {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    height: 140px;
+    padding: 10px 10px;
+    font-size: 11px;
+}
+
+#right {
+    position: absolute;
+    top: 0px;
+    left: 275px;
+    bottom: 0px;
+    right: 0px;
+}
+
+#application-title {
+    font-size: 40px;
+    font-weight: 700;
+}
+
+#map {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+}
+
+#slider-sun-azimuth-div div.slider-selection.tick-slider-selection,
+#slider-sun-azimuth-div div.slider-tick.in-selection,
+#slider-sun-altitude-div div.slider-selection.tick-slider-selection,
+#slider-sun-altitude-div div.slider-tick.in-selection,
+#slider-intensity-div div.slider-selection.tick-slider-selection,
+#slider-intensity-div div.slider-tick.in-selection {
+    background-image: -webkit-linear-gradient(top, #f9f9f9 0%, #f5f5f5 100%);
+    background-image: -o-linear-gradient(top, #f9f9f9 0%, #f5f5f5 100%);
+    background-image: linear-gradient(to bottom, #f9f9f9 0%, #f5f5f5 100%);
+}
+
+#buttonShow, #buttonHide, #buttonReset {
+    border-radius: 0px 0px;
+    margin-top: 10px;
+    width: 75px;
+}
+
+.title {
+    text-align: left;
+    font-size: 26px;
+    font-weight: 700;
+    color: #fff;
+    margin-top: 25px;
+    margin-bottom: 3px;
+}
+
+.heading {
+    text-align: left;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    margin-top: 10px;
+    margin-bottom: 3px;
+}
+
+.slider.slider-horizontal {
+    margin-left: 10px;
+    width: 200px;
+}
+
+.slider-tick {
+    opacity: 1;
+}
+
+.separator {
+    width: 150px;
+    height: 2px;
+    background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+}
