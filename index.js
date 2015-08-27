@@ -123,6 +123,7 @@ function (
         // Create map
         var _bas = new ArcGISTiledMapServiceLayer(BASE);
         var _sun = new ArcGISImageServiceLayer(ARCTIC);
+        _sun.setInterpolation(ImageServiceParameters.INTERPOLATION_BILINEAR);
         var _ele = new ArcGISImageServiceLayer(ARCTIC, {opacity: 0.5});
         var _map = new Map('map', {
             logo: true,
