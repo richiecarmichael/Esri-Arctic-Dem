@@ -120,6 +120,11 @@ function (
             setSunRenderingRule();
         });
 
+        // Initiate Popover
+        $(function () {
+            $('[data-toggle="popover"]').popover({html:true});
+        });
+
         // Create map
         var _bas = new ArcGISTiledMapServiceLayer(BASE);
         var _sun = new ArcGISImageServiceLayer(ARCTIC);

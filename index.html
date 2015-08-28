@@ -25,7 +25,8 @@
     <link type='image/ico' rel='icon' href='img/favicon.ico' />
     <link type='image/ico' rel='apple-touch-icon' href='img/apple-touch-icon.png' />
 
-    <link type='text/css' rel='stylesheet' href='//fonts.googleapis.com/css?family=Berkshire+Swash' />
+    <!-- <link type='text/css' rel='stylesheet' href='//fonts.googleapis.com/css?family=Berkshire+Swash' /> -->
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,500|Roboto+Condensed:400,300,700|Roboto+Slab:400,700' rel='stylesheet' type='text/css'>
     <link type='text/css' rel='stylesheet' href='//js.arcgis.com/3.14compact/esri/css/esri.css' />
     <link type='text/css' rel='stylesheet' href='css/bootstrap.min.css' />
     <link type='text/css' rel='stylesheet' href='css/bootstrap-theme.min.css' />
@@ -56,14 +57,14 @@
     <div id='left'>
         <div id='left-scroll'>
             <div id='left-margins'>
-                <div id='application-title'>Arctic DEM</div>
+                <div id='application-title'><h1 class="app-title">Arctic Dem</h1></div>
                 <div id='titleHillshade' class='title'>Hillshade</div>
                 <div class='separator'></div>
                 <div class=' heading'>Sun Azimuth</div>
                 <input id='slider-sun-azimuth' />
                 <div class='heading'>Sun Altitude</div>
                 <input id='slider-sun-altitude' />
-                <div class="btn-group" role="group">
+                <div class="btn-group btn-spacing" role="group">
                     <button id='buttonShow' type='button' class='btn btn-primary disabled'>Show</button>
                     <button id='buttonHide' type='button' class='btn btn-primary'>Hide</button>
                 </div>
@@ -75,11 +76,17 @@
                 <input id='slider-slope' />
                 <div class='heading'>Aspect</div>
                 <input id='slider-aspect' />
-                <button id='buttonReset' type='button' class='btn btn-primary'>Reset</button>
+                <div class="btn-spacing">
+                    <button id='buttonReset' type='button' class='btn btn-primary'>Reset</button>
+                </div>
             </div>
         </div>
         <div id='left-disclaimer'>
-            <p>Data courtesy of <a href='http://www.pgc.umn.edu' target='_blank'>Polar Geospatial Center</a>. Preliminary, raw data was used in this application. The data has not undergone a Quality Assurance or Quality Check program. Details about the planned data processing may be found on the PGC site. These data must not be used for navigational purposes in their current condition and are used for illustrative purposes only.</p>
+            <a tabindex="0" class="info-btn" role="button" data-toggle="popover" data-trigger="focus" data-placement="top" title="Disclaimer" data-content='<p>Data courtesy of <a href="http://www.pgc.umn.edu" target="_blank">Polar Geospatial Center</a>. Preliminary, raw data was used in this application. The data has not undergone a Quality Assurance or Quality Check program. Details about the planned data processing may be found on the PGC site. These data must not be used for navigational purposes in their current condition and are used for illustrative purposes only.</p>'>
+                <span class="glyphicon glyphicon-info-sign"></span> 
+            </a>
+
+            
         </div>
     </div>
 </body>

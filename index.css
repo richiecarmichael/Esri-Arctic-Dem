@@ -3,7 +3,7 @@
     margin: 0;
     height: 100%;
     width: 100%;
-    font-family: 'Berkshire Swash', cursive;
+    font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
     color: #ffffff;
     overflow:hidden;
     -moz-box-sizing: border-box;
@@ -17,7 +17,7 @@
     top: 0px;
     width: 275px;
     bottom: 0px;
-    background-color: #ff6a00;
+    background-color: #f89927; /*Brand Orange 100*/
     -webkit-box-shadow: 3px 0px 5px 0px rgba(50, 50, 50, 0.3);
     -moz-box-shadow:    3px 0px 5px 0px rgba(50, 50, 50, 0.3);
     box-shadow:         3px 0px 5px 0px rgba(50, 50, 50, 0.3);
@@ -28,7 +28,7 @@
     left: 0px;
     top: 0px;
     right: 0px;
-    bottom: 140px;
+    bottom: 40px;
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -47,7 +47,7 @@
     left: 0px;
     right: 0px;
     bottom: 0px;
-    height: 140px;
+    /*height: 140px;*/
     padding: 10px 10px;
     font-size: 11px;
 }
@@ -84,16 +84,29 @@
     background-image: linear-gradient(to bottom, #f9f9f9 0%, #f5f5f5 100%);
 }
 
-#buttonShow, #buttonHide, #buttonReset {
+.btn-group {
     border-radius: 0px 0px;
-    margin-top: 10px;
-    width: 75px;
+    background: #fff;
+    border-radius:4px;
+/*    width: 75px;*/
 }
 
+.btn{
+    width:75px;
+}
+
+.btn-spacing{
+    margin-top: 10px;
+}
+
+.app-title{
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: bold;
+}
 .title {
     text-align: left;
     font-size: 26px;
-    font-weight: 700;
+    font-weight: 300;
     color: #fff;
     margin-top: 25px;
     margin-bottom: 3px;
@@ -102,7 +115,7 @@
 .heading {
     text-align: left;
     font-size: 18px;
-    font-weight: 700;
+    font-weight: normal;
     color: #fff;
     margin-top: 10px;
     margin-bottom: 3px;
@@ -121,4 +134,28 @@
     width: 150px;
     height: 2px;
     background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+}
+
+.popover a{
+    color: #f89927; /*Brand Orange 100*/
+}
+
+.popover a:hover{
+    color: #f89927; /*Brand Orange 100*/
+}
+
+.info-btn{
+    font-size: 20px;
+}
+
+.popover-content{
+    color: #6e6e6e; /*Brand Gray 200*/
+}
+
+.popover-title{
+    background: #b4b4b4; /*Brand Gray 100*/
+}
+
+.popover{
+    
 }
