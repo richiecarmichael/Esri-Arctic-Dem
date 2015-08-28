@@ -17,7 +17,7 @@
     top: 0px;
     width: 275px;
     bottom: 0px;
-    background-color: #f89927; /*Brand Orange 100*/
+    background-color: #007ac2; /*Brand Blue 200*/
     -webkit-box-shadow: 3px 0px 5px 0px rgba(50, 50, 50, 0.3);
     -moz-box-shadow:    3px 0px 5px 0px rgba(50, 50, 50, 0.3);
     box-shadow:         3px 0px 5px 0px rgba(50, 50, 50, 0.3);
@@ -145,7 +145,18 @@
 }
 
 .info-btn{
-    font-size: 20px;
+    font-size: 25px;
+    color: #e76518;
+}
+
+.info-btn:focus,
+.info-btn:hover{
+    color: #CE4C00;
+}
+
+.info-btn .glyphicon{
+    bottom: -15px !important;
+    top: auto;
 }
 
 .popover-content{
@@ -153,9 +164,38 @@
 }
 
 .popover-title{
-    background: #b4b4b4; /*Brand Gray 100*/
+    background: #b9e0f7; /*Brand Blue 100*/
+    color: #6e6e6e; /*Brand Gray 200*/
 }
 
-.popover{
-    
+.esriSimpleSlider{
+    background-color: #007ac2; /*Brand Blue 200*/
+    color: #fff;
+    border: none;
+}
+
+.esriSimpleSliderVertical .esriSimpleSliderIncrementButton {
+    border-bottom: 1px solid #fff;
+}
+
+.esriSimpleSliderIncrementButton:hover,
+.esriSimpleSliderDecrementButton:hover{
+    background: #0061A9; /*Darken brand blue 200 by 10%*/
+}
+
+.slider-handle{
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    background-color: #e76518;
+    background-image: -moz-linear-gradient(top, #f36f20, #d5570b);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f36f20), to(#d5570b));
+    background-image: -webkit-linear-gradient(top, #f36f20, #d5570b);
+    background-image: -o-linear-gradient(top, #f36f20, #d5570b);
+    background-image: linear-gradient(to bottom, #f36f20, #d5570b);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff36f20', endColorstr='#ffd5570b', GradientType=0);
+    border-color: #d5570b #d5570b #8c3908;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    *background-color: #d5570b;
+    /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
