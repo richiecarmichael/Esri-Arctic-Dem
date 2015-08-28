@@ -29,8 +29,9 @@ function (
 
         //
         var BASE = 'http://maps8.arcgisonline.com/arcgis/rest/services/Arctic_Polar_Ocean_Base/MapServer';
-        var ARCTIC = 'http://maps.esri.com/apl15/rest/services/ArcticDEM/DEM/ImageServer';
+        var ARCTIC = 'http://elevs3-589951911.us-east-1.elb.amazonaws.com/arcgis/rest/services/artic_DEMv1/ImageServer';
         var FXN = 'DynamicShadedRelief_2';
+        var EXTENT = new Extent(1900376, -486110, 2133460, -150359, new SpatialReference(5936));
 
         var _isMultiDirectional = false;
 
@@ -128,18 +129,16 @@ function (
         // Create map
         var _bas = new ArcGISTiledMapServiceLayer(BASE);
         var _sun = new ArcGISImageServiceLayer(ARCTIC);
-        _sun.setInterpolation(ImageServiceParameters.INTERPOLATION_BILINEAR);
-        var _ele = new ArcGISImageServiceLayer(ARCTIC, {opacity: 0.5});
+        var _ele = new ArcGISImageServiceLayer(ARCTIC, { opacity: 0.5 });
         var _map = new Map('map', {
             logo: true,
             showAttribution: false,
             slider: true,
-            extent: new Extent(1817644, -512794, 2162101, -306633,
-                new SpatialReference(5936)
-            )
+            extent: EXTENT
         });
         setSunRenderingRule();
         setElevationRenderingRule();
+        _sun.setInterpolation(ImageServiceParameters.INTERPOLATION_BILINEAR);
         _map.addLayers([
             _bas,
             _sun,
@@ -166,6 +165,7 @@ function (
                 $('#slider-sun-altitude').slider('enable');
             }
         }
+
         function setElevationRenderingRule() {
             var e_min = $('#slider-elevation').slider('getAttribute', 'min');
             var e_max = $('#slider-elevation').slider('getAttribute', 'max');
