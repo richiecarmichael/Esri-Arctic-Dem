@@ -38,8 +38,8 @@ function (
         // Configure UI
         $('#slider-sun-azimuth').slider({
             id: 'slider-sun-azimuth-div',
-            ticks: [0, 45, 90, 135, 180, 225, 270, 315, 360],
-            ticks_labels: ['0°', '45°', '90°', '135°', '180°', '225°', '270°', '315°', '360°'],
+            ticks: [0, 90, 180, 270, 360],
+            ticks_labels: ['0°', '90°', '180°', '270°', '360°'],
             range: false,
             value: 315,
             formatter: function (e) {
@@ -83,8 +83,10 @@ function (
             setElevationRenderingRule();
         });
         $('#slider-aspect').slider({
-            ticks: [0, 45, 90, 135, 180, 225, 270, 315, 360],
-            ticks_labels: ['0°', '45°', '90°', '135°', '180°', '225°', '270°', '315°', '360°'],
+            //ticks: [0, 45, 90, 135, 180, 225, 270, 315, 360],
+            //ticks_labels: ['0°', '45°', '90°', '135°', '180°', '225°', '270°', '315°', '360°'],
+            ticks: [0, 90, 180, 270, 360],
+            ticks_labels: ['0°', '90°', '180°', '270°', '360°'],
             range: true,
             value: [0, 360],
             formatter: function (e) {
