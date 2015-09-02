@@ -6,33 +6,52 @@
 
 require([
     'esri/map',
+    'esri/Color',
     'esri/SpatialReference',
     'esri/layers/ArcGISTiledMapServiceLayer',
     'esri/layers/ArcGISImageServiceLayer',
     'esri/layers/RasterFunction',
     'esri/layers/ImageServiceParameters',
+    'esri/layers/FeatureLayer',
+    'esri/layers/GraphicsLayer',
+    'esri/symbols/SimpleFillSymbol',
+    'esri/symbols/SimpleLineSymbol',
+    'esri/renderers/SimpleRenderer',
+    'esri/tasks/query',
+    'esri/tasks/QueryTask',
     'esri/geometry/Extent',
     'dojo/domReady!'
 ],
 function (
     Map,
+    Color,
     SpatialReference,
     ArcGISTiledMapServiceLayer,
     ArcGISImageServiceLayer,
     RasterFunction,
     ImageServiceParameters,
+    FeatureLayer,
+    GraphicsLayer,
+    SimpleFillSymbol,
+    SimpleLineSymbol,
+    SimpleRenderer,
+    Query,
+    QueryTask,
     Extent
     ) {
     $(document).ready(function () {
         // Enforce strict mode
         'use strict';
 
-        //
+        // Hardcoded constants
         var BASE = 'http://maps8.arcgisonline.com/arcgis/rest/services/Arctic_Polar_Ocean_Base/MapServer';
-        var ARCTIC = 'http://elevs3-589951911.us-east-1.elb.amazonaws.com/arcgis/rest/services/artic_DEMv1/ImageServer';
+        var ARCTIC = 'http://arctic-661168812.us-east-1.elb.amazonaws.com/arcgis/rest/services/umn/ImageServer';
+        var COAST1 = 'http://services.arcgis.com/6DIQcwlPy8knb6sg/arcgis/rest/services/Coastlines_Alaska_Polar_Stereographic/FeatureServer/0'; // detailed
+        var COAST2 = 'http://services.arcgis.com/6DIQcwlPy8knb6sg/arcgis/rest/services/Coastlines_Alaska_Polar_Stereographic/FeatureServer/1'; // coarse
         var FXN = 'DynamicShadedRelief_2';
-        var EXTENT = new Extent(1900376, -486110, 2133460, -150359, new SpatialReference(5936));
+        var EXTENT = new Extent(586268, -1851963, 3655360, -25433, new SpatialReference(5936));
 
+        // Hidden flag to switch from single to multidirectional hillshade
         var _isMultiDirectional = false;
 
         // Configure UI
@@ -83,8 +102,6 @@ function (
             setElevationRenderingRule();
         });
         $('#slider-aspect').slider({
-            //ticks: [0, 45, 90, 135, 180, 225, 270, 315, 360],
-            //ticks_labels: ['0°', '45°', '90°', '135°', '180°', '225°', '270°', '315°', '360°'],
             ticks: [0, 90, 180, 270, 360],
             ticks_labels: ['0°', '90°', '180°', '270°', '360°'],
             range: true,
@@ -125,27 +142,61 @@ function (
 
         // Initiate Popover
         $(function () {
-            $('[data-toggle="popover"]').popover({html:true});
+            $('[data-toggle="popover"]').popover({
+                html: true
+            });
         });
 
-        // Create map
+        // Create layers
         var _bas = new ArcGISTiledMapServiceLayer(BASE);
         var _sun = new ArcGISImageServiceLayer(ARCTIC);
         var _ele = new ArcGISImageServiceLayer(ARCTIC, { opacity: 0.5 });
+        var _fot = new GraphicsLayer();
+        //var _co1 = new FeatureLayer(COAST1);
+        //var _co2 = new FeatureLayer(COAST2);
+
+        // Update layer settings
+        setSunRenderingRule();
+        setElevationRenderingRule();
+        _sun.setInterpolation(ImageServiceParameters.INTERPOLATION_BILINEAR);      
+        //_co1.setMinScale(1762871);
+        //_co2.setMaxScale(1762871);
+        //_co1.setRenderer(new SimpleRenderer(new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([0, 111, 130, 1]), 1)));
+        _fot.setRenderer(new SimpleRenderer(new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255, 0, 0, 1]), 0.5), new Color([255, 255, 255, 0]))));
+
+        // Create map and add basemap
         var _map = new Map('map', {
             logo: true,
             showAttribution: false,
             slider: true,
             extent: EXTENT
         });
-        setSunRenderingRule();
-        setElevationRenderingRule();
-        _sun.setInterpolation(ImageServiceParameters.INTERPOLATION_BILINEAR);
         _map.addLayers([
-            _bas,
-            _sun,
-            _ele
+            _bas
         ]);
+
+        // Continue loading after map+basemap loaded
+        _map.on('load', function () {
+            // Load imagery layers and footprings
+            _map.addLayers([
+                _sun,
+                _ele,
+                //_co1,
+                //_co2,
+                _fot
+            ]);
+            var query = new Query();
+            query.returnGeometry = true;
+            query.outSpatialReference = _map.spatialReference;
+            query.where = "Tag <> 'Overview' AND Tag <> 'mnGMTED_OV' AND Tag <> 'mn75_grd_m2' AND Tag <> 'mn30_grd_m2' AND Tag <> 'mn15_grd_m2'";
+
+            var queryTask = new QueryTask(ARCTIC);
+            queryTask.execute(query, function(r){
+                $.each(r.features, function () {
+                    _fot.add(this);
+                });
+            });
+        });
        
         function setSunRenderingRule() {
             if (_isMultiDirectional) {
