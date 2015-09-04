@@ -6,51 +6,38 @@
 
 require([
     'esri/map',
-    'esri/Color',
     'esri/SpatialReference',
-    'esri/layers/ArcGISTiledMapServiceLayer',
     'esri/layers/ArcGISImageServiceLayer',
     'esri/layers/RasterFunction',
-    'esri/layers/ImageServiceParameters',
-    'esri/layers/FeatureLayer',
-    'esri/layers/GraphicsLayer',
-    'esri/symbols/SimpleFillSymbol',
-    'esri/symbols/SimpleLineSymbol',
-    'esri/renderers/SimpleRenderer',
-    'esri/tasks/query',
-    'esri/tasks/QueryTask',
     'esri/geometry/Extent',
+    'esri/urlUtils',
     'dojo/domReady!'
 ],
 function (
     Map,
-    Color,
     SpatialReference,
-    ArcGISTiledMapServiceLayer,
     ArcGISImageServiceLayer,
     RasterFunction,
-    ImageServiceParameters,
-    FeatureLayer,
-    GraphicsLayer,
-    SimpleFillSymbol,
-    SimpleLineSymbol,
-    SimpleRenderer,
-    Query,
-    QueryTask,
-    Extent
+    Extent,
+    urlUtils
     ) {
     $(document).ready(function () {
         // Enforce strict mode
         'use strict';
 
         // Hardcoded constants
-        var BASE = 'http://maps8.arcgisonline.com/arcgis/rest/services/Arctic_Polar_Ocean_Base/MapServer';
-        var ARCTIC = 'http://arctic-661168812.us-east-1.elb.amazonaws.com/arcgis/rest/services/umn/ImageServer';
-        var FXN = 'DynamicShadedRelief_2';
-        var EXTENT = new Extent(586268, -1851963, 3655360, -25433, new SpatialReference(5936));
+        var ARCTIC = 'http://ngamaps.geointapps.org/arcgis/rest/services/Arctic_Summit/Arctic_DEM/ImageServer';
+        var PROXY = 'http://maps.esri.com/rc/arctic/proxy.ashx';
+        var FXN = 'DEM_Hillshade';
+        var EXTENT = new Extent(-16774646, 8615655, -16548851, 8750337, new SpatialReference(102100));
 
-        // Hidden flag to switch from single to multidirectional hillshade
-        var _isMultiDirectional = false;
+        // Inidicate usage of proxy for the following hosted map services
+        $.each([ARCTIC], function () {
+            urlUtils.addProxyRule({
+                urlPrefix: this,
+                proxyUrl: PROXY
+            });
+        });
 
         // Configure UI
         $('#slider-sun-azimuth').slider({
@@ -132,10 +119,7 @@ function (
                 $('#slider-slope').slider('getAttribute', 'max')
             ]);
             setElevationRenderingRule();
-        });
-        $('#titleHillshade').click(function () {
-            _isMultiDirectional = !_isMultiDirectional;
-            setSunRenderingRule();
+            _ele.refresh();
         });
 
         // Initiate Popover
@@ -144,70 +128,44 @@ function (
                 html: true
             });
         });
-
+        
         // Create layers
-        var _bas = new ArcGISTiledMapServiceLayer(BASE);
         var _sun = new ArcGISImageServiceLayer(ARCTIC);
         var _ele = new ArcGISImageServiceLayer(ARCTIC, { opacity: 0.5 });
-        var _fot = new GraphicsLayer();
 
         // Update layer settings
         setSunRenderingRule();
         setElevationRenderingRule();
-        _sun.setInterpolation(ImageServiceParameters.INTERPOLATION_BILINEAR);
-        _fot.setRenderer(new SimpleRenderer(new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255, 0, 0, 1]), 0.5), new Color([255, 255, 255, 0]))));
 
         // Create map and add basemap
         var _map = new Map('map', {
+            basemap: 'satellite',
             logo: true,
             showAttribution: false,
             slider: true,
             extent: EXTENT
         });
         _map.addLayers([
-            _bas
+            _sun,
+            _ele
         ]);
 
-        // Continue loading after map+basemap loaded
-        _map.on('load', function () {
-            // Load imagery layers and footprings
-            _map.addLayers([
-                _sun,
-                _ele,
-                _fot
-            ]);
-            var query = new Query();
-            query.returnGeometry = true;
-            query.outSpatialReference = _map.spatialReference;
-            query.where = "Tag <> 'Overview' AND Tag <> 'mnGMTED_OV' AND Tag <> 'mn75_grd_m2' AND Tag <> 'mn30_grd_m2' AND Tag <> 'mn15_grd_m2'";
-
-            var queryTask = new QueryTask(ARCTIC);
-            queryTask.execute(query, function (r) {
-                $.each(r.features, function () {
-                    _fot.add(this);
-                });
-            });
-        });
-
         function setSunRenderingRule() {
-            if (_isMultiDirectional) {
-                _sun.setRenderingRule(new RasterFunction({
-                    rasterFunction: 'MultiDirectionalShadedRelief_2'
-                }));
-                $('#slider-sun-azimuth').slider('disable');
-                $('#slider-sun-altitude').slider('disable');
-            }
-            else {
-                _sun.setRenderingRule(new RasterFunction({
-                    rasterFunction: FXN,
-                    functionArguments: {
-                        Altitude: $('#slider-sun-altitude').slider('getValue'),
-                        Azimuth: $('#slider-sun-azimuth').slider('getValue')
-                    }
-                }));
-                $('#slider-sun-azimuth').slider('enable');
-                $('#slider-sun-altitude').slider('enable');
-            }
+            var mask = new RasterFunction();
+            mask.functionName = 'Mask';
+            mask.functionArguments = {
+                NoDataValues: ['0']
+            };
+
+            var hillshade = new RasterFunction();
+            hillshade.functionName = 'Hillshade';
+            hillshade.functionArguments = {
+                DEM: mask,
+                Azimuth: $('#slider-sun-azimuth').slider('getValue'),
+                Altitude: $('#slider-sun-altitude').slider('getValue')
+            };
+
+            _sun.setRenderingRule(hillshade);
         }
 
         function setElevationRenderingRule() {
@@ -236,25 +194,63 @@ function (
                 _ele.show();
             }
 
-            _ele.setRenderingRule(new RasterFunction({
-                rasterFunction: 'Filter_ElevationSlopeAspect',
-                functionArguments: {
-                    'NoDataRanges_Elevation': [
-                        e_min,
-                        e_lef,
-                        e_rig,
-                        e_max
-                    ],
-                    'InputRanges_Aspect': [
-                        a_lef,
-                        a_rig
-                    ],
-                    'InputRanges_Slope': [
-                        s_lef,
-                        s_rig
-                    ]
-                }
-            }));
+            var remap = new RasterFunction();
+            remap.functionName = 'Remap';
+            remap.functionArguments = {
+                NoDataRanges: [e_min, e_lef, e_rig, e_max],
+                AllowUnmatched: true
+            };
+
+            var aspect = new RasterFunction();
+            aspect.functionName = 'Aspect';
+            aspect.functionArguments = {
+                Raster: remap
+            };
+
+            var remap2 = new RasterFunction();
+            remap2.functionName = 'Remap';
+            remap2.functionArguments = {
+                Raster: aspect,
+                InputRanges: [a_lef, a_rig],
+                OutputValues: [1],
+                AllowUnmatched: false
+            };
+            remap2.outputPixelType = 'U8';
+
+            var slope = new RasterFunction();
+            slope.functionName = 'Slope';
+            slope.functionArguments = {
+                DEM: remap,
+                ZFactor: 1
+            };
+
+            var remap3 = new RasterFunction();
+            remap3.functionName = 'Remap';
+            remap3.functionArguments = {
+                Raster: slope,
+                InputRanges: [s_lef, s_rig],
+                OutputValues: [1],
+                AllowUnmatched: false
+            };
+
+            var arithmetic = new RasterFunction();
+            arithmetic.functionName = 'Arithmetic';
+            arithmetic.functionArguments = {
+                Raster: remap2,
+                Raster2: remap3,
+                Operation: 1
+            };
+            arithmetic.outputPixelType = 'U8';
+
+            var colormap = new RasterFunction();
+            colormap.functionName = 'Colormap';
+            colormap.functionArguments = {
+                Raster: arithmetic,
+                Colormap: [[2, 0, 255, 255]]
+            };
+            colormap.outputPixelType = 'U8';
+
+            _ele.setRenderingRule(colormap);
         }
     });
 });

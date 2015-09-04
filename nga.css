@@ -94,11 +94,11 @@
 
 .btn-group {
     background: #fff;
-    border-radius: 4px;
+    border-radius:4px;
 }
 
-.btn {
-    width: 75px;
+.btn{
+    width:75px;
 }
 
 .btn-spacing{
@@ -109,7 +109,6 @@
     font-family: 'Roboto Condensed', sans-serif;
     font-weight: bold;
 }
-
 .title {
     text-align: left;
     font-size: 26px;
@@ -167,12 +166,12 @@
 }
 
 .popover-content{
-    color: #6e6e6e;       /*Brand Gray 200*/
+    color: #6e6e6e; /*Brand Gray 200*/
 }
 
 .popover-title{
     background: #b9e0f7; /*Brand Blue 100*/
-    color: #6e6e6e;      /*Brand Gray 200*/
+    color: #6e6e6e; /*Brand Gray 200*/
 }
 
 .esriSimpleSlider{
