@@ -49,6 +49,10 @@
     bottom: 10px;
 }
 
+#left-disclaimer .popover {
+    font-size: 12px;
+}
+
 #left-help{
     position: absolute;
     left: 50px;
@@ -90,6 +94,12 @@
     background-image: -webkit-linear-gradient(top, #f9f9f9 0%, #f5f5f5 100%);
     background-image: -o-linear-gradient(top, #f9f9f9 0%, #f5f5f5 100%);
     background-image: linear-gradient(to bottom, #f9f9f9 0%, #f5f5f5 100%);
+}
+
+#bookmarks {
+    position: absolute;
+    top: 10px;
+    right: 15px;
 }
 
 .btn-group {

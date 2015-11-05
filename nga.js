@@ -122,6 +122,20 @@ function (
             _ele.refresh();
         });
 
+        // Bookmarks
+        $('#bookmarks > button').click(function () {
+            $(this).addClass('disabled').siblings().removeClass('disabled');
+            var split = $(this).attr('data-extent').split(',');
+            var extent = new Extent(
+                Number(split[0]),
+                Number(split[1]),
+                Number(split[2]),
+                Number(split[3]),
+                new SpatialReference(4326)
+            );
+            _map.setExtent(extent, true);
+        });
+
         // Initiate Popover
         $(function () {
             $('[data-toggle="popover"]').popover({
