@@ -5,7 +5,7 @@
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+    https://www.apache.org/licenses/LICENSE-2.0
 
     Unless required by applicable law or agreed to in writing, software
     distributed under the License is distributed on an "AS IS" BASIS,
@@ -54,8 +54,8 @@ function (
         'use strict';
 
         // Hardcoded constants
-        var BASE = 'http://maps8.arcgisonline.com/arcgis/rest/services/Arctic_Polar_Ocean_Base/MapServer';
-        var ARCTIC = 'http://arctic-661168812.us-east-1.elb.amazonaws.com/arcgis/rest/services/umn/ImageServer';
+        var BASE = 'https://maps8.arcgisonline.com/arcgis/rest/services/Arctic_Polar_Ocean_Base/MapServer';
+        var ARCTIC = 'https://arctic-661168812.us-east-1.elb.amazonaws.com/arcgis/rest/services/umn/ImageServer';
         var FXN = 'DynamicShadedRelief_2';
         var EXTENT = new Extent(586268, -1851963, 3655360, -25433, new SpatialReference(5936));
 

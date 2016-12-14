@@ -5,7 +5,7 @@
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+    https://www.apache.org/licenses/LICENSE-2.0
 
     Unless required by applicable law or agreed to in writing, software
     distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,8 +36,8 @@ function (
         'use strict';
 
         // Hardcoded constants
-        var ARCTIC = 'http://ngamaps.geointapps.org/arcgis/rest/services/Arctic_Summit/Arctic_DEM/ImageServer';
-        var PROXY = 'http://maps.esri.com/rc/arctic/proxy.ashx';
+        var ARCTIC = 'https://ngamaps.geointapps.org/arcgis/rest/services/Arctic_Summit/Arctic_DEM/ImageServer';
+        var PROXY = 'https://maps.esri.com/rc/arctic/proxy.ashx';
         var FXN = 'DEM_Hillshade';
         var EXTENT = new Extent(-16774646, 8615655, -16548851, 8750337, new SpatialReference(102100));
 
