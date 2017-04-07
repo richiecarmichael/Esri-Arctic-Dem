@@ -54,7 +54,7 @@ function (
         'use strict';
 
         // Hardcoded constants
-        var BASE = 'https://maps8.arcgisonline.com/arcgis/rest/services/Arctic_Polar_Ocean_Base/MapServer';
+        var BASE = 'https://services.arcgisonline.com/arcgis/rest/services/Polar/Arctic_Ocean_Base/MapServer';
         var ARCTIC = 'https://arctic-661168812.us-east-1.elb.amazonaws.com/arcgis/rest/services/umn/ImageServer';
         var FXN = 'DynamicShadedRelief_2';
         var EXTENT = new Extent(586268, -1851963, 3655360, -25433, new SpatialReference(5936));
