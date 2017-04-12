@@ -55,8 +55,8 @@ function (
 
         // Hardcoded constants
         var BASE = 'https://services.arcgisonline.com/arcgis/rest/services/Polar/Arctic_Ocean_Base/MapServer';
-        var ARCTIC = 'https://arctic-661168812.us-east-1.elb.amazonaws.com/arcgis/rest/services/umn/ImageServer';
-        var FXN = 'DynamicShadedRelief_2';
+        var ARCTIC = 'https://maps.esri.com/apl1/rest/services/Arctic_DEM_APS/ImageServer';
+        var FXN = 'DynamicShadedRelief';
         var EXTENT = new Extent(586268, -1851963, 3655360, -25433, new SpatialReference(5936));
 
         // Hidden flag to switch from single to multidirectional hillshade
@@ -202,7 +202,7 @@ function (
         function setSunRenderingRule() {
             if (_isMultiDirectional) {
                 _sun.setRenderingRule(new RasterFunction({
-                    rasterFunction: 'MultiDirectionalShadedRelief_2'
+                    rasterFunction: 'MultiDirectionalShadedRelief'
                 }));
                 $('#slider-sun-azimuth').slider('disable');
                 $('#slider-sun-altitude').slider('disable');
